@@ -1,0 +1,5 @@
+{
+  "projectId": "jd90q7",
+  "integrationFolder": "cypress/integration",
+  "testFiles": "**/*.*"
+}
