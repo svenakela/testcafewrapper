@@ -1,6 +1,6 @@
 # CYPRESS.IO REST WRAPPER
 
-Wrapping the test tool [Cypress](https://cypress.io) with a REST interface making it possible to run test specs to be executed with an http request.
+Wrapping the test tool [Cypress](https://cypress.io) with a REST interface making it possible to run test specs with an http request.
 
 ## Usage
 
