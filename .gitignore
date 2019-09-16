@@ -1,3 +1,7 @@
+cypress/videos
+cypress/screenshots
+cypress/integration
+
 # Logs
 logs
 *.log
@@ -59,3 +63,5 @@ typings/
 
 # next.js build output
 .next
+
+.DS_Store

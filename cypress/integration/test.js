@@ -1,5 +1,6 @@
 describe('My First Test', function() {
-  it('Does not do much!', function() {
-    expect(true).to.equal(true)
+  
+  it('Validate config value', function() {
+    expect(Cypress.env().personId).to.equal('197001016666')
   })
 })
