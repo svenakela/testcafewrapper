@@ -11,7 +11,7 @@ Wrapping the test tool [Cypress](https://cypress.io) with a REST interface makin
 
 ### Request Interaction
 
-Tests can cache a return value with the task function `cache`. The value cached will automatically be added to the response that is sent back to the http client.
+Tests can cache a JSON value with the task function `cache`. The value cached will automatically be added to the response that is sent back to the http client.
 
      cy.task('cache', '{"testReturnValue":"Will be added to the response"}')
 
