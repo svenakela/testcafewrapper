@@ -8,10 +8,33 @@
 // https://on.cypress.io/plugins-guide
 // ***********************************************************
 
+const http = require('http');
+
+module.exports = (on, config) => {
+  on('task', {
+    cache (value) {
+      console.log(config.env.uuid);
+      let options = {
+        url: 'http://localhost',
+        port: config.env.port,
+        path: '/cache/' + config.env.uuid,
+        method: 'POST',
+        headers : {
+          'Content-Type': 'application/json'
+        }
+      };
+      let request = http.request(options);
+      request.write(value);
+      request.end();
+      return options;
+    }
+  })
+}
+
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-module.exports = (on, config) => {
+//module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-}
+//}

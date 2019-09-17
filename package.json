@@ -15,7 +15,9 @@
     "body-parser": "^1.19.0",
     "cypress": "^3.4.1",
     "express": "^4.17.1",
-    "braces": "^3.0.0"
+    "braces": "^3.0.0",
+    "node-cache": "^4.2.1",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.2"
