@@ -4,7 +4,9 @@ Wrapping the test tool [Cypress](https://cypress.io) with a REST interface makin
 
 ## Usage
 
+- You need npm on your computer
 - Clone this repository
+- Execute `npm install` to setup the project
 - Run the server with `npm run start` 
 - Make a test request to the server: `curl -v --header 'Content-Type: application/json' --data '{"personId":"197001016666"}'  http://localhost:5000/cypress/v1/run/test`
 - Make your own specs, store them under `cypress/integration` and request them with `http://localhost/cypress/v1/run/{your-spec-name-here}`
