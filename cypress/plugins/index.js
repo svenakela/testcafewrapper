@@ -9,50 +9,37 @@
 // ***********************************************************
 
 const http = require('http');
+const type = { 
+  CACHE: 'cache',
+  SESSION: 'session'
+}
+
+const cached = (cache, value, config) => {
+  let options = {
+    url: 'http://localhost',
+    port: config.env.port,
+    path: '/cache/v1/' + config.env.uuid,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  let request = http.request(options);
+  request.write(value);
+  request.end();
+  return options;
+}
 
 module.exports = (on, config) => {
   on('task', {
-    cache (value) {
-      console.log(config.env.uuid);
+    cache(value) {
       value.uuid = config.env.uuid;
-      let options = {
-        url: 'http://localhost',
-        port: config.env.port,
-        path: '/cache/' + config.env.uuid,
-        method: 'POST',
-        headers : {
-          'Content-Type': 'application/json'
-        }
-      };
-      let request = http.request(options);
-      request.write(value);
-      request.end();
-      return options;
+      return cached(type.CACHE, value, config);
     },
-    
-    storeSession (value) {
-        console.log(config.env.uuid);
-        let options = {
-          url: 'http://localhost',
-          port: config.env.port,
-          path: '/session-cache/' + config.env.uuid,
-          method: 'POST',
-          headers : {
-            'Content-Type': 'application/json'
-          }
-        };
-        let request = http.request(options);
-        request.write(value);
-        request.end();
-        return options;
-      }
+
+    storeSession(value) {
+      return cached(type.SESSION, value, config);
+    }
   })
 }
 
-// This function is called when a project is opened or re-opened (e.g. due to
-// the project's config changing)
-
-//module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
-//}
