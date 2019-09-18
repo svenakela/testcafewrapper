@@ -17,7 +17,9 @@
     "express": "^4.17.1",
     "braces": "^3.0.0",
     "node-cache": "^4.2.1",
-    "uuid": "^3.3.3"
+    "uuid": "^3.3.3",
+    "pino": "^5.13.3",
+    "express-pino-logger": "^4.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.2"

@@ -9,6 +9,7 @@
 // ***********************************************************
 
 const http = require('http');
+const pino = require('pino')();
 
 const cached = (cache, value, config) => {
   let options = {
@@ -35,6 +36,11 @@ module.exports = (on, config) => {
 
     storeSession(value) {
       return cached('session', value, config);
+    },
+
+    log(value) {
+      pino.info(value);
+      return null;
     }
   })
 }
