@@ -14,6 +14,7 @@ module.exports = (on, config) => {
   on('task', {
     cache (value) {
       console.log(config.env.uuid);
+      value.uuid = config.env.uuid;
       let options = {
         url: 'http://localhost',
         port: config.env.port,
@@ -27,7 +28,24 @@ module.exports = (on, config) => {
       request.write(value);
       request.end();
       return options;
-    }
+    },
+    
+    storeSession (value) {
+        console.log(config.env.uuid);
+        let options = {
+          url: 'http://localhost',
+          port: config.env.port,
+          path: '/session-cache/' + config.env.uuid,
+          method: 'POST',
+          headers : {
+            'Content-Type': 'application/json'
+          }
+        };
+        let request = http.request(options);
+        request.write(value);
+        request.end();
+        return options;
+      }
   })
 }
 

@@ -1,5 +1,6 @@
 {
   "projectId": "jd90q7",
   "integrationFolder": "cypress/integration",
-  "testFiles": "**/*.*"
-}
+  "testFiles": "**/*.*",
+  "defaultCommandTimeout":30000
+ }
