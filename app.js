@@ -1,5 +1,5 @@
 import express from 'express';
-import cypress from 'cypress';
+import testcafe from 'testcafe';
 import bodyParser from 'body-parser';
 import nodeCache from 'node-cache';
 import uuidv4 from 'uuid/v4';
@@ -13,48 +13,49 @@ const caches = new Map([['cache', cache], ['session', sessionCache]]);
 const logger = pino();
 const app = express();
 app.use(bodyParser.json())
-app.use(expressPino({logger: logger}));
+app.use(expressPino({ logger: logger }));
 
-app.post('/cypress/v1/run/:specName', async (req, res) => {
-  
-  const uuid  = req.body.uuid == undefined ? uuidv4() : req.body.uuid;
+app.post('/cafe/v1/run/:specName', async (req, res) => {
+
+  const { specName } = req.params;
+  const uuid = req.body.uuid == undefined ? uuidv4() : req.body.uuid;
   req.body.session = sessionCache.get(uuid);
   req.body.port = PORT;
-  req.log.info('Requesting spec', req.params.specName, 'with configuration:', req.body);
+  req.log.info('Requesting spec', specName, 'with configuration:', req.body);
 
-  cypress.run({
-    spec: 'cypress/integration/' + req.params.specName + '.spec.js',
-    env: req.body
-  })
-    .then(results => {
-      let responseValues = cache.get(uuid) == undefined ? {} : cache.get(uuid);
-      responseValues.uuid = uuid;
-      res.status(200).send({
-        values: responseValues,
-        status: results.totalFailed,
-        result: results
+  testcafe('localhost').then(cafe => {
+    cafe.createRunner()
+      .src('tests/' + specName + '.test.js')
+      .reporter('json')
+      .run()
+      .then(result => {
+        res.status(200).send({
+          result: result
+        });
       })
-    })
-    .catch((err) => {
-      req.log.error(err)
-      res.status(500).send({
-        error: err
-      })
-    });
+      .catch(err => {
+        res.status(500).send({
+          error: err
+        });
+      });
+  });
+
 });
 
 app.post('/cache/v1/:type/:id', (req, res) => {
 
-  req.log.info('Caching', req.params.type, 'with ID', req.body);
-  caches.get(req.params.type).set(req.params.id, req.body, function (error, success) {
+  const {type, id} = req.params;
+
+  req.log.info('Caching', type, 'with ID', req.body);
+  caches.get(type).set(id, req.body, function (error, success) {
     if (!error && success) {
       res.status(200).send({
-        id: req.params.id,
-        cache: cache.get(req.params.id)
+        id: id,
+        cache: cache.get(id)
       });
     } else {
       res.status(500).send({
-        id: req.params.id
+        id: id
       });
     }
   });
