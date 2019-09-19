@@ -26,18 +26,19 @@ app.post('/cafe/v1/run/:specName', async (req, res) => {
   testcafe('localhost').then(cafe => {
     cafe.createRunner()
       .src('tests/' + specName + '.test.js')
+      .clientScripts({content: JSON.stringify(req.body)})
       .reporter('json')
       .run()
       .then(result => {
         res.status(200).send({
           result: result
         });
-      })
-      .catch(err => {
-        res.status(500).send({
-          error: err
-        });
       });
+  })
+  .catch(err => {
+    res.status(500).send({
+      error: err
+    });
   });
 
 });
