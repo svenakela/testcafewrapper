@@ -5,6 +5,7 @@ import nodeCache from 'node-cache';
 import uuidv4 from 'uuid/v4';
 import pino from 'pino';
 import expressPino from 'express-pino-logger';
+import { runInNewContext } from 'vm';
 
 const PORT = 5000;
 const cache = new nodeCache({ stdTTL: 30, checkperiod: 120 });
@@ -15,7 +16,7 @@ const app = express();
 app.use(bodyParser.json())
 app.use(expressPino({ logger: logger }));
 
-app.post('/cafe/v1/run/:specName', async (req, res) => {
+app.post('/cafe/v1/run/:specName', async (req, res, next) => {
 
   const { specName } = req.params;
   const uuid = req.body.uuid == undefined ? uuidv4() : req.body.uuid;
@@ -33,12 +34,13 @@ app.post('/cafe/v1/run/:specName', async (req, res) => {
         res.status(200).send({
           result: result
         });
+      })
+      .catch(err => {
+        next(err);
       });
   })
   .catch(err => {
-    res.status(500).send({
-      error: err
-    });
+    next(err);
   });
 
 });
