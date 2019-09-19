@@ -1,6 +1,6 @@
-# CYPRESS.IO REST WRAPPER
+# TESTCAFÉ REST WRAPPER
 
-Wrapping the test tool [Cypress](https://cypress.io) with a REST interface making it possible to run test specs with an http request.
+Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a REST interface making it possible to run test specs with an http request.
 
 ## Usage
 
@@ -10,17 +10,17 @@ Wrapping the test tool [Cypress](https://cypress.io) with a REST interface makin
 - Run the server with `npm run start` 
 - Make a test request to the server: 
 
-    curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"personId":"197001016666"}'  http://localhost:5000/cypress/v1/run/test
+    curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"personId":"197001016666"}'  http://localhost:5000/cafe/v1/run/test
 
-- Make your own specs, store them under `cypress/integration` and request them with `http://localhost/cypress/v1/run/{your-spec-name-here}`
+- Make your own specs, store them under `./tests/` and request them with `http://localhost/cafe/v1/run/{your-spec-name-here}`
 
 ### Request Interaction
 
-Tests can cache a JSON value with the task function `cache`. The value cached will automatically be added to the response that is sent back to the http client.
+Tests can cache a JSON value with the function `cache`. The value cached will automatically be added to the response that is sent back to the http client.
 
-     cy.task('cache', '{"testReturnValue":"Will be added to the response"}')
+     // TODO EXAMPLE
 
-Tests can log to Node.js logger by invoking `task('log')``
+Tests can log to Node.js logger
 
-     cy.task('log', 'Log me to the server log')
+     // TODO EXAMPLE
 
