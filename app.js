@@ -20,6 +20,8 @@ app.post('/cafe/v1/run/:specName', async (req, res, next) => {
 
   const { specName } = req.params;
   const uuid = req.body.uuid == undefined ? uuidv4() : req.body.uuid;
+  
+  req.body.uuid = uuid;
   req.body.session = sessionCache.get(uuid);
   req.body.port = PORT;
   req.log.info('Requesting spec', specName, 'with configuration:', req.body);
@@ -31,8 +33,12 @@ app.post('/cafe/v1/run/:specName', async (req, res, next) => {
       .reporter('json')
       .run()
       .then(result => {
+    	let responseValues = cache.get(req.body.uuid) == undefined ? {} : cache.get(req.body.uuid);
+    	  
         res.status(200).send({
-          result: result
+          result: result,
+          values: responseValues,
+          id: req.body.uuid
         });
       })
       .catch(err => {
