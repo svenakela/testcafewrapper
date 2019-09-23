@@ -1,11 +1,12 @@
-import {cached} from '../lib/support';
+import Support from '../lib/support';
 
 fixture `testcafe`
     .page `http://devexpress.github.io/testcafe/example`;
 
 test('testcafe', async t => {
 
-    cached('cache','{"x": "y"}', t);
+    let support = new Support(t);
+    support.cacheValue('{"x": "y"}');
 
     let mockValues =  JSON.parse(t.testRun.opts.clientScripts.values().next().value.content);
     console.log(t.testRun.opts.clientScripts)
