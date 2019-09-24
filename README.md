@@ -17,7 +17,24 @@ Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a
 
 - Make your own specs, store them under `./tests/` and request them with `http://localhost/cafe/v1/run/{your-spec-name-here}`
 
-### Request Interaction
+### Request Interaction and Support
 
-When invoking a test via the REST interface, parameters can be sent to the test as a JSON string. The JSON structure will be injected into the test page and can be reached by the `getParameters()` function in the `Support` class found in `lib/support`.
+When running a test, there are a few support features in the `Support` class found in `lib/support`. The support class is created by using the static builder `Support.build(t)`.
 
+### Sending Parameters
+
+When invoking a test via the REST interface, parameters can be sent to the test as a JSON string. The JSON structure will be injected into the test page and can be reached by the `getParameters()` function.
+
+    const support = await Support.build(t)
+    const params = await support.getParameters()
+    await t.expect(params.personId).eql('197001016666', 'Not Okey, mKay?')
+
+### Get Cookies
+
+Get yer cookies with `const cooks = await support.getCookies()`.
+
+### Session objects
+
+Data set by the `storeSession(val)` function can be restored with `restoreSession()` in a later test. If the second test is requested with the same UUID set in the body as the first test gives in the response. The session cookie data will be set automatically from that ID.
+
+    
