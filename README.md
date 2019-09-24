@@ -8,7 +8,7 @@ Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a
 
 - Clone this repository
 
-- Execute `npm install` to setup the project
+- Execute `npm install --save-dev` to setup the project
 
 - Run the server with `npm run start` 
 
@@ -19,11 +19,5 @@ Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a
 
 ### Request Interaction
 
-Tests can cache a JSON value with the function `cache`. The value cached will automatically be added to the response that is sent back to the http client.
-
-     // TODO EXAMPLE
-
-Tests can log to Node.js logger
-
-     // TODO EXAMPLE
+When invoking a test via the REST interface, parameters can be sent to the test as a JSON string. The JSON structure will be injected into the test page and can be reached by the `getParameters()` function in the `Support` class found in `lib/support`.
 

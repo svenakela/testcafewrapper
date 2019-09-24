@@ -11,13 +11,10 @@ test('testcafe', async t => {
     const support = await Support.build(t)
     support.cacheResponse('{"x": "y"}')
 
-    const params = await t.eval( () => getParametersFromRunner666() )
+    const params = await support.getParameters();
     await t.expect(params.personId).eql('197001016666', 'Not Okey, mKay?')
 
     const cooks = await support.getCookies()
     logger.info('Got cookies:', cooks)
     support.storeSession(cooks);
-    
-    //console.log(t.testRun.opts.clientScripts)
-    //await t.expect(mockValues.personId).eql('197001016666', 'Not Okey, mKay?')
 })

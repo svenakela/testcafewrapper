@@ -57,9 +57,9 @@ app.post('/cafe/v1/run/:specName', async (req, res, next) => {
 
 app.post('/cache/v1/:type/:id', (req, res) => {
 
-  const { type, id, body } = req.params;
+  const { type, id } = req.params;
+  const { body } = req;
 
-  req.log.info('Caching', type, 'with ID', req.body);
   caches.get(type).set(id, body, function (error, success) {
     if (!error && success) {
       res.status(200).send({
