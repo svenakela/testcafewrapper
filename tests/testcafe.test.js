@@ -1,14 +1,23 @@
 import Support from '../lib/support';
+import pino from 'pino';
+
+const logger = pino();
 
 fixture `testcafe`
-    .page `http://devexpress.github.io/testcafe/example`;
+    .page `http://devexpress.github.io/testcafe/example`
 
 test('testcafe', async t => {
 
-    let support = new Support(t);
-    support.cacheValue('{"x": "y"}');
+    const support = await Support.build(t)
+    support.cacheResponse('{"x": "y"}')
 
-    let mockValues =  JSON.parse(t.testRun.opts.clientScripts.values().next().value.content);
-    console.log(t.testRun.opts.clientScripts)
-    await t.expect(mockValues.personId).eql('197001016666', 'Not Okey, mKay?')
+    const params = await t.eval( () => getParametersFromRunner666() )
+    await t.expect(params.personId).eql('197001016666', 'Not Okey, mKay?')
+
+    const cooks = await support.getCookies()
+    logger.info('Got cookies:', cooks)
+    support.storeSession(cooks);
+    
+    //console.log(t.testRun.opts.clientScripts)
+    //await t.expect(mockValues.personId).eql('197001016666', 'Not Okey, mKay?')
 })

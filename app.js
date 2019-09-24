@@ -9,7 +9,7 @@ import expressPino from 'express-pino-logger';
 const PORT = 5000;
 const cache = new nodeCache({ stdTTL: 30, checkperiod: 120 });
 const sessionCache = new nodeCache({ stdTTL: 500, checkperiod: 120 });
-const caches = new Map([['cache', cache], ['session', sessionCache]]);
+const caches = new Map([['response', cache], ['session', sessionCache]]);
 const logger = pino();
 const app = express();
 app.use(bodyParser.json())
@@ -19,21 +19,26 @@ app.post('/cafe/v1/run/:specName', async (req, res, next) => {
 
   const { specName } = req.params;
   const uuid = req.body.uuid == undefined ? uuidv4() : req.body.uuid;
-  
+
   req.body.uuid = uuid;
   req.body.session = sessionCache.get(uuid);
   req.body.port = PORT;
-  req.body.trustlyDataIdentifier = 666;
   req.log.info('Requesting spec', specName, 'with configuration:', req.body);
+
+  const scriptContent = `
+    function getParametersFromRunner666() {
+      return ${JSON.stringify(req.body)};
+    }
+  `
 
   testcafe('localhost').then(cafe => {
     cafe.createRunner()
       .src('tests/' + specName + '.test.js')
-      .clientScripts( {content: JSON.stringify(req.body)} )
+      .clientScripts({ content: scriptContent })
       .reporter('json')
       .run()
       .then(result => {
-    	let responseValues = cache.get(req.body.uuid) == undefined ? {} : cache.get(req.body.uuid);
+        let responseValues = cache.get(req.body.uuid) == undefined ? {} : cache.get(req.body.uuid);
         res.status(200).send({
           result: result,
           values: responseValues,
@@ -44,15 +49,15 @@ app.post('/cafe/v1/run/:specName', async (req, res, next) => {
         next(err);
       });
   })
-  .catch(err => {
-    next(err);
-  });
+    .catch(err => {
+      next(err);
+    });
 
 });
 
 app.post('/cache/v1/:type/:id', (req, res) => {
 
-  const {type, id, body} = req.params;
+  const { type, id, body } = req.params;
 
   req.log.info('Caching', type, 'with ID', req.body);
   caches.get(type).set(id, body, function (error, success) {
