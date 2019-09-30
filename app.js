@@ -8,7 +8,7 @@ import expressPino from 'express-pino-logger';
 
 const PORT = 5000;
 const cache = new nodeCache({ stdTTL: 30, checkperiod: 120 });
-const sessionCache = new nodeCache({ stdTTL: 500, checkperiod: 120 });
+const sessionCache = new nodeCache({ stdTTL: 900, checkperiod: 120 });
 const caches = new Map([['response', cache], ['session', sessionCache]]);
 const logger = pino();
 const app = express();
@@ -64,7 +64,7 @@ app.post('/cache/v1/:type/:id', (req, res) => {
     if (!error && success) {
       res.status(200).send({
         id: id,
-        cache: cache.get(id)
+        cache: caches.get(type).get(id)
       });
     } else {
       res.status(500).send({
