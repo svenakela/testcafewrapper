@@ -33,7 +33,7 @@ app.post('/cafe/v1/run/:specName', async (req, res, next) => {
 
   testcafe('localhost').then(cafe => {
     cafe.createRunner()
-      .src('tests/' + specName + '.test.js')
+      .src('dist/specs/' + specName + '.test.js')
       .clientScripts({ content: scriptContent })
       .reporter('json')
       .run()

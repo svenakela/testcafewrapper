@@ -14,7 +14,7 @@ test('testcafe', async t => {
     const params = await support.getParameters()
     await t.expect(params.personId).eql('197001016666', 'Not Okey, mKay?')
 
-    const cooks = await support.getCookies()
+    const cooks = await support.getSessionData();
     logger.info('Got cookies:', cooks)
     support.storeSession(cooks)
 })

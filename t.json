@@ -1,0 +1,20 @@
+{
+  "bank": "SEB",
+  "accounts": [
+    {
+      "name": "Hushållskonto",
+      "accountNumber": "5273 66 087 66",
+      "balance": "5.632,62"
+    },
+    {
+      "name": "Vardagskonto",
+      "accountNumber": "5364 00 724 34",
+      "balance": "1.981,66"
+    },
+    {
+      "name": "Lönekonto",
+      "accountNumber": "5699 01 865 53",
+      "balance": "6.401,74"
+    }
+  ]
+}
