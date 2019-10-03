@@ -1,6 +1,7 @@
 {
-  "browsers": "chrome:headless",
   "skipJsErrors": true,
   "selectorTimeout": 30000,
-  "assertionTimeout": 30000
+  "assertionTimeout": 30000,
+  "disablePageCaching": true,
+  "videoPath": "artifacts/videos"
 }

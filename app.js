@@ -27,13 +27,14 @@ app.post('/cafe/v1/run/:specName', async (req, res, next) => {
 
   const scriptContent = `
     function getParametersFromRunner666() {
-      return ${JSON.stringify(req.body)};
+      return ${JSON.stringify(req.body.testData)};
     }
   `
 
   testcafe('localhost').then(cafe => {
     cafe.createRunner()
       .src('tests/' + specName + '.test.js')
+      .browsers(req.body.config.browser)
       .clientScripts({ content: scriptContent })
       .reporter('json')
       .run()
