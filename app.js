@@ -5,6 +5,7 @@ import nodeCache from 'node-cache';
 import uuidv4 from 'uuid/v4';
 import pino from 'pino';
 import expressPino from 'express-pino-logger';
+import { defaultCafeConfig } from './lib/defaultcafeconfig';
 
 const PORT = 5000;
 const cache = new nodeCache({ stdTTL: 30, checkperiod: 120 });
@@ -18,32 +19,37 @@ app.use(expressPino({ logger: logger }));
 app.post('/cafe/v1/run/:specName', async (req, res, next) => {
 
   const { specName } = req.params;
-  const uuid = req.body.uuid == undefined ? uuidv4() : req.body.uuid;
+  let {testData, config} = req.body;
+  const uuid = testData.uuid == undefined ? uuidv4() : testData.uuid;
 
-  req.body.uuid = uuid;
-  req.body.session = sessionCache.get(uuid);
-  req.body.port = PORT;
-  req.log.info('Requesting spec', specName, 'with configuration:', req.body);
+  testData.uuid = uuid;
+  testData.session = sessionCache.get(uuid);
+  testData.port = PORT;
+  req.log.info('Requesting spec', specName, 'with configuration:', testData);
 
   const scriptContent = `
     function getParametersFromRunner666() {
-      return ${JSON.stringify(req.body.testData)};
+      return ${JSON.stringify(testData)};
     }
   `
+
+  if (config == undefined) {
+    config = defaultCafeConfig;
+  }
 
   testcafe('localhost').then(cafe => {
     cafe.createRunner()
       .src('tests/' + specName + '.test.js')
-      .browsers(req.body.config.browser)
+      .browsers(config.browser)
       .clientScripts({ content: scriptContent })
       .reporter('json')
-      .run()
+      .run(config)
       .then(result => {
-        let responseValues = cache.get(req.body.uuid) == undefined ? {} : cache.get(req.body.uuid);
+        let responseValues = cache.get(uuid) == undefined ? {} : cache.get(uuid);
         res.status(200).send({
           result: result,
           values: responseValues,
-          uuid: req.body.uuid
+          uuid: testData.uuid
         });
       })
       .catch(err => {

@@ -19,7 +19,8 @@
     "node-cache": "^4.2.1",
     "uuid": "^3.3.3",
     "pino": "^5.13.3",
-    "express-pino-logger": "^4.0.0"
+    "express-pino-logger": "^4.0.0",
+    "ffmpeg": "^0.0.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-rc.1",
