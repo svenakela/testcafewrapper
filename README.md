@@ -1,6 +1,6 @@
 # PAPI-WORKER - BROWSER INTERACTION WRAPPER
 
-Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a REST interface making it possible to run test specs with an http request.
+Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a REST interface making it possible to run specs with an http request.
 
 ## Usage
 
@@ -12,29 +12,32 @@ Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a
 
 - Run the server with `npm run start` 
 
-- Make a test request to the server: 
-    `curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"personId":"197001016666"}' http://localhost:5000/papi/v1/test/test/testcafe`
+- Make a spec request to the server: 
+    `curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"specData":{"personId":"197001016666","uuid":"42092208-432d-445b-9714-bfdd0f01a5e5"}}' http://localhost:5000/papi/v1/test/test/testcafe`
 
-- Make your own specs, store them under `./tests/` and request them with `http://localhost/papi/v1/{country}/{bank}/{spec-name}`
+- Make your own specs, store them under `./specs/` and request them with `http://localhost/papi/v1/{country}/{bank}/{spec-name}`
 
-### Request Interaction and Support
-
-When running a test, there are a few support features in the `Support` class found in `lib/support`. The support class is created by using the static builder `Support.build(t)`.
+## Interaction
 
 ### Sending Parameters
 
-When invoking a test via the REST interface, parameters can be sent to the test as a JSON string. The JSON structure will be injected into the test page and can be reached by the `getParameters()` function.
+When invoking a spec via the REST interface, parameters can be sent to the spec as a JSON string. The JSON structure will be injected into the spec page and can be reached by the `getParameters()` function.
 
     const support = await Support.build(t)
     const params = await support.getParameters()
     await t.expect(params.personId).eql('197001016666', 'Not Okey, mKay?')
 
-### Get Cookies
+To send parameters from a client add them as a JSON body. In the example below the spec will get `personId` and `uuid`to work with. What to send is up to the spec itself, the server passes the `specData` config through. Also, in the example below the spec is running with a different browser than default, `firefox` instead of `chrome:headless`. This is handy when developing new specs.
 
-Get yer cookies with `const cooks = await support.getCookies()`.
+    curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"specData":{"personId":"197001016666","uuid":"42092208-432d-445b-9714-bfdd0f01a5e5"}, "config":{"browser":"firefox"}}' http://localhost:5000/papi/v1/test/test/testcafe
 
-### Session objects
+### Creating Responses
 
-Data set by the `storeSession(val)` function can be restored with `restoreSession()` in a later test. If the second test is requested with the same UUID set in the body as the first test gives in the response. The session cookie data will be set automatically from that ID.
+Data set by the `storeSession(val)` function can be restored with `restoreSession()` in a later spec. If the second spec is requested with the same UUID set in the body as the first spec gives in the response. The session cookie data will be set automatically from that ID.
 
-    
+## Making Specifications
+
+When running a spec, there are a few support features in the `Support` class found in `lib/support`. The support class is created by using the static builder `Support.build(t)` where `t` is the TestController you get from TestCafé in a spec file.
+
+### Login Support
+

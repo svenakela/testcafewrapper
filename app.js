@@ -20,23 +20,20 @@ app.use(expressPino({ logger: logger }));
 app.post('/papi/v1/:country/:bankName/:specName', async (req, res, next) => {
 
   const { country, bankName, specName } = req.params;
-  let {testData, config} = req.body;
-  const uuid = (testData == undefined || testData.uuid == undefined) ? uuidv4() : testData.uuid;
+  const specData = req.body.specData == undefined ? {} : req.body.specData;
+  const config =  req.body.config == undefined ? defaultCafeConfig : req.body.config;
+  const uuid = (specData == undefined || specData.uuid == undefined) ? uuidv4() : specData.uuid;
 
-  testData.uuid = uuid;
-  testData.session = sessionCache.get(uuid);
-  testData.port = PORT;
-  req.log.info('Requesting spec', specName, 'with configuration:', testData);
+  specData.uuid = uuid;
+  specData.session = sessionCache.get(uuid);
+  specData.port = PORT;
+  req.log.info('Requesting spec', specName, 'with configuration:', specData);
 
   const scriptContent = `
     function getParametersFromRunner666() {
-      return ${JSON.stringify(testData)};
+      return ${JSON.stringify(specData)};
     }
   `
-
-  if (config == undefined) {
-    config = defaultCafeConfig;
-  }
 
   testcafe('localhost').then(cafe => {
     cafe.createRunner()
@@ -50,7 +47,7 @@ app.post('/papi/v1/:country/:bankName/:specName', async (req, res, next) => {
         res.status(200).send({
           result: result,
           values: responseValues,
-          uuid: testData.uuid
+          uuid: specData.uuid
         });
       })
       .catch(err => {

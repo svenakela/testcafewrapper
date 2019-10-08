@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe';
 import Support from '../../../lib/support';
 
-fixture`lokal.seb.test`;
+fixture`lokal.cafe.test`;
 
 test('Välj konton', async t => {
   const support = await Support.build(t);
