@@ -1,4 +1,4 @@
-# TESTCAFÉ REST WRAPPER
+# PAPI-WORKER - BROWSER INTERACTION WRAPPER
 
 Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a REST interface making it possible to run test specs with an http request.
 
@@ -13,9 +13,9 @@ Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a
 - Run the server with `npm run start` 
 
 - Make a test request to the server: 
-    `curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"personId":"197001016666"}' http://localhost:5000/cafe/v1/run/testcafe`
+    `curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"personId":"197001016666"}' http://localhost:5000/papi/v1/test/test/testcafe`
 
-- Make your own specs, store them under `./tests/` and request them with `http://localhost/cafe/v1/run/{your-spec-name-here}`
+- Make your own specs, store them under `./tests/` and request them with `http://localhost/papi/v1/{country}/{bank}/{spec-name}`
 
 ### Request Interaction and Support
 

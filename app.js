@@ -8,6 +8,7 @@ import expressPino from 'express-pino-logger';
 import { defaultCafeConfig } from './lib/defaultcafeconfig';
 
 const PORT = 5000;
+const SPECPATH = 'specs/';
 const cache = new nodeCache({ stdTTL: 30, checkperiod: 120 });
 const sessionCache = new nodeCache({ stdTTL: 900, checkperiod: 120 });
 const caches = new Map([['response', cache], ['session', sessionCache]]);
@@ -16,11 +17,11 @@ const app = express();
 app.use(bodyParser.json())
 app.use(expressPino({ logger: logger }));
 
-app.post('/cafe/v1/run/:specName', async (req, res, next) => {
+app.post('/papi/v1/:country/:bankName/:specName', async (req, res, next) => {
 
-  const { specName } = req.params;
+  const { country, bankName, specName } = req.params;
   let {testData, config} = req.body;
-  const uuid = testData.uuid == undefined ? uuidv4() : testData.uuid;
+  const uuid = (testData == undefined || testData.uuid == undefined) ? uuidv4() : testData.uuid;
 
   testData.uuid = uuid;
   testData.session = sessionCache.get(uuid);
@@ -39,7 +40,7 @@ app.post('/cafe/v1/run/:specName', async (req, res, next) => {
 
   testcafe('localhost').then(cafe => {
     cafe.createRunner()
-      .src('tests/' + specName + '.test.js')
+      .src([SPECPATH, country, bankName, specName].join('/') + '.test.js')
       .browsers(config.browser)
       .clientScripts({ content: scriptContent })
       .reporter('json')

@@ -1,5 +1,5 @@
 import { Selector, ClientFunction, Role } from 'testcafe';
-import Support from '../lib/support';
+import Support from '../../../lib/support';
 
 fixture`lokal.seb.test`
 

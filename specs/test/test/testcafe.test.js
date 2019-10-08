@@ -1,4 +1,4 @@
-import Support from '../lib/support';
+import Support from '../../../lib/support';
 import pino from 'pino';
 
 const logger = pino();
