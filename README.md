@@ -39,5 +39,24 @@ Data set by the `storeSession(val)` function can be restored with `restoreSessio
 
 When running a spec, there are a few support features in the `Support` class found in `lib/support`. The support class is created by using the static builder `Support.build(t)` where `t` is the TestController you get from TestCafé in a spec file.
 
-### Login Support
+### Session Support
 
+If a page requires sessions over several requests make sure to use the `Support.doRequest(url, action)` function. By doing this the spec can go through a login step and then the session will be cached in 15 min waiting to be used in sequential specs. In every request the response to the client present a UUID. If this UUID is sent with a following request the session will automatically be added onto the new request and the authenticated user can continue to work on the page.
+
+    await support.doRequest('https://privat.ib.seb.se/wow/1000/1000/wow1020.aspx', async t => {
+        // Do your web page interaction, logging in and such
+    })
+
+Then, in a following request
+
+      await support.doRequest(null, async t => {
+          await t.click(Selector('#mi2')).wait(5000)
+      });
+
+### Response data
+
+Data saved with the `cacheResponse` function will be appended to the client response. Prepare you data object and stringify it to the cache.
+
+    support.cacheResponse(JSON.stringify(accounts))
+
+Only one data object can exist per spec, but the data object can contain several objects or JSON structures.
