@@ -1,4 +1,4 @@
-# PAPI-WORKER - BROWSER INTERACTION WRAPPER
+# BROWSER INTERACTION WRAPPER
 
 Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a REST interface making it possible to run specs with an http request.
 
@@ -13,9 +13,9 @@ Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a
 - Run the server with `npm run start` 
 
 - Make a spec request to the server: 
-    `curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"specData":{"personId":"197001016666","uuid":"42092208-432d-445b-9714-bfdd0f01a5e5"}}' http://localhost:5000/papi/v1/test/test/testcafe`
+    `curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"specData":{"personId":"197001016666","uuid":"42092208-432d-445b-9714-bfdd0f01a5e5"}}' http://localhost:5000/specs/v1/test/test/testcafe`
 
-- Make your own specs, store them under `./specs/` and request them with `http://localhost/papi/v1/{country}/{bank}/{spec-name}`
+- Make your own specs, store them under `./specs/` and request them with `http://localhost/specs/v1/{country}/{bank}/{spec-name}`
 
 ## Interaction
 
@@ -29,7 +29,7 @@ When invoking a spec via the REST interface, parameters can be sent to the spec 
 
 To send parameters from a client add them as a JSON body. In the example below the spec will get `personId` and `uuid`to work with. What to send is up to the spec itself, the server passes the `specData` config through. Also, in the example below the spec is running with a different browser than default, `firefox` instead of `chrome:headless`. This is handy when developing new specs.
 
-    curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"specData":{"personId":"197001016666","uuid":"42092208-432d-445b-9714-bfdd0f01a5e5"}, "config":{"browser":"firefox"}}' http://localhost:5000/papi/v1/test/test/testcafe
+    curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"specData":{"personId":"197001016666","uuid":"42092208-432d-445b-9714-bfdd0f01a5e5"}, "config":{"browser":"firefox"}}' http://localhost:5000/specs/v1/test/test/testcafe
 
 ### Creating Responses
 

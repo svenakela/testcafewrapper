@@ -17,7 +17,7 @@ const app = express();
 app.use(bodyParser.json())
 app.use(expressPino({ logger: logger }));
 
-app.post('/papi/v1/:country/:bankName/:specName', async (req, res, next) => {
+app.post('/specs/v1/:country/:bankName/:specName', async (req, res, next) => {
 
   const { country, bankName, specName } = req.params;
   const specData = req.body.specData == undefined ? {} : req.body.specData;
