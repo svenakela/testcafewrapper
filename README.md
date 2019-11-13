@@ -15,7 +15,7 @@ Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a
 - Make a spec request to the server: 
     `curl -v -w '@curl_time.txt' --header 'Content-Type: application/json' --data '{"specData":{"personId":"197001016666","uuid":"42092208-432d-445b-9714-bfdd0f01a5e5"}}' http://localhost:5000/specs/v1/test/test/testcafe`
 
-- Make your own specs, store them under `./specs/` and request them with `http://localhost/specs/v1/{country}/{bank}/{spec-name}`
+- Make your own specs, store them under `./specs/{dir/subdir}` and request them with `http://localhost/specs/v1/{dir/subdir/spec-name}`. The two levels dir structure is explained below. 
 
 ## Interaction
 
