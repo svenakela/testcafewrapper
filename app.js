@@ -17,9 +17,9 @@ const app = express();
 app.use(bodyParser.json())
 app.use(expressPino({ logger: logger }));
 
-app.post('/specs/v1/:country/:bankName/:specName', async (req, res, next) => {
+app.post('/specs/v1/:product/:project/:specName', async (req, res, next) => {
 
-  const { country, bankName, specName } = req.params;
+  const { product, project, specName } = req.params;
   const specData = req.body.specData == undefined ? {} : req.body.specData;
   const config =  req.body.config == undefined ? defaultCafeConfig : req.body.config;
   const uuid = (specData == undefined || specData.uuid == undefined) ? uuidv4() : specData.uuid;
@@ -37,7 +37,7 @@ app.post('/specs/v1/:country/:bankName/:specName', async (req, res, next) => {
 
   testcafe('localhost').then(cafe => {
     cafe.createRunner()
-      .src([SPECPATH, country, bankName, specName].join('/') + '.test.js')
+      .src([SPECPATH, product, project, specName].join('/') + '.test.js')
       .browsers(config.browser)
       .clientScripts({ content: scriptContent })
       .reporter('json')
