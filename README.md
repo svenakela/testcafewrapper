@@ -1,5 +1,9 @@
 # BROWSER INTERACTION WRAPPER
 
+This branch has a simple GUI to let you interact with the server. You need to start this server AND the server in `client` to get the entire shebang.
+
+There are two specs added, one "classic" and one functional programmed. Both fetch cycling stats and can be accessed via the client GUI.
+
 Wrapping the test tool [TestCafe](https://devexpress.github.io/testcafe/) with a REST interface making it possible to run specs with an http request.
 
 ## Usage

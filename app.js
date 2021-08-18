@@ -6,6 +6,7 @@ import uuidv4 from 'uuid/v4';
 import pino from 'pino';
 import expressPino from 'express-pino-logger';
 import { defaultCafeConfig } from './lib/defaultcafeconfig';
+import glob from 'glob';
 
 const PORT = 5000;
 const SPECPATH = 'specs/';
@@ -16,6 +17,20 @@ const logger = pino();
 const app = express();
 app.use(bodyParser.json())
 app.use(expressPino({ logger: logger }));
+
+app.get('/specs/v1', async (req, res) => {
+  const specs = glob.sync(SPECPATH + '**/**/*.test.js')
+      .map(f => { 
+          return f
+              .replace('specs/', '')
+              .replace('\.test\.js', '')
+      })
+      .map((spec, i) => {
+        return {id:i, spec:spec}
+      });
+  res.status(200).send({specs});
+  res.end();
+});
 
 app.post('/specs/v1/:product/:project/:specName', async (req, res, next) => {
 
@@ -77,6 +92,8 @@ app.post('/cache/v1/:type/:id', (req, res) => {
       });
     }
   });
+
+  res.end();
 
 });
 
