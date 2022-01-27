@@ -33,7 +33,7 @@ function App() {
     if (json.hasOwnProperty('values') && Array.isArray(json.values)) {
       return json;
     } else {
-      setSnackState({open:true, output:'Oh no! ' + stateValues.specification.spec + ' failed.'});
+      setSnackState({open:true, output:`Oh no! ${stateValues.specification.spec} failed.`});
       throw Error('Lord No my bradda Geezus!');
     }
   };
