@@ -12,15 +12,17 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "braces": "^3.0.0",
+    "caniuse-lite": "^1.0.30001358",
     "express": "^4.17.1",
     "express-pino-logger": "^6.0.0",
     "ffmpeg": "^0.0.4",
     "glob": "^7.1.7",
     "node-cache": "^5.1.2",
-    "npm-check": "^5.9.2",
+    "npm-check": "^4.1.4",
     "pino": "^6.13.0",
     "testcafe": "^1.15.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",

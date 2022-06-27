@@ -40,7 +40,7 @@ test('testcafe', async t => {
         }
         return response
     })
-
+    
     support.cacheResponse(JSON.stringify(response))
 
 })

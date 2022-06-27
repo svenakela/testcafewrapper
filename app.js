@@ -2,7 +2,7 @@ import express from 'express';
 import testcafe from 'testcafe';
 import bodyParser from 'body-parser';
 import nodeCache from 'node-cache';
-import uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import pino from 'pino';
 import expressPino from 'express-pino-logger';
 import { defaultCafeConfig } from './lib/defaultcafeconfig';
@@ -42,7 +42,7 @@ app.post('/specs/v1/:product/:project/:specName', async (req, res, next) => {
   specData.uuid = uuid;
   specData.session = sessionCache.get(uuid);
   specData.port = PORT;
-  req.log.info('Requesting spec', specName, 'with configuration:', specData);
+  req.log.info(`Requesting spec ${specName} with configuration: ${specData}`);
 
   const scriptContent = `
     function getParametersFromRunner666() {
@@ -73,6 +73,8 @@ app.post('/specs/v1/:product/:project/:specName', async (req, res, next) => {
       next(err);
     });
 
+  logger.info(nodeCache);
+
 });
 
 app.post('/cache/v1/:type/:id', (req, res) => {
@@ -98,5 +100,5 @@ app.post('/cache/v1/:type/:id', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  logger.info('Listening on port', PORT);
+  logger.info(`Listening on port ${PORT}`);
 });
