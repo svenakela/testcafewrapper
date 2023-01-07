@@ -18,7 +18,7 @@
     "node-cache": "^5.1.2",
     "npm-check": "^5.9.2",
     "pino": "^6.13.0",
-    "testcafe": "^1.15.1",
+    "testcafe": "^15.1.317922",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
