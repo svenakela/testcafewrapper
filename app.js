@@ -2,7 +2,7 @@ import express from 'express';
 import testcafe from 'testcafe';
 import bodyParser from 'body-parser';
 import nodeCache from 'node-cache';
-import uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import pino from 'pino';
 import expressPino from 'express-pino-logger';
 import { defaultCafeConfig } from './lib/defaultcafeconfig';
